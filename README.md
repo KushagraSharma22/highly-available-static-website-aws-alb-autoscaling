@@ -367,8 +367,8 @@ I enjoy building production-inspired cloud projects to strengthen my understandi
 
 ### 📬 Connect with Me
 
-- **GitHub:** https://github.com/<your-github-username>
-- **LinkedIn:** https://linkedin.com/in/<your-linkedin-profile>
+- **GitHub:** https://github.com/KushagraSharma22
+- **LinkedIn:** https://linkedin.com/in/kushagra-sharma-416877289
 
 ---
 
