@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure Status | CloudWithKushagra</title>
+<meta name="description" content="Live infrastructure status dashboard for CloudWithKushagra showing EC2 instance ID, Availability Zone, IP addresses, AMI ID and region.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☁️</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark">CK</span>Cloud<span>With</span>Kushagra</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="services.html">AWS Services</a>
+      <a href="status.html">Infra Status</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="eyebrow"><i class="fa-solid fa-gauge-high"></i> Live Dashboard</span>
+    <h1>Infrastructure Status</h1>
+    <p>Reads instance metadata directly from the AWS Instance Metadata Service (IMDSv2) when hosted on EC2.</p>
+  </div>
+</header>
+
+<section style="padding-top:10px;">
+  <div class="container">
+
+    <div class="terminal glass reveal">
+      <div class="terminal-bar">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+        <span class="terminal-title">ec2-instance-metadata — bash</span>
+      </div>
+      <div class="terminal-body">
+
+        <div id="status-badge" class="term-status">
+          <span class="pulse-dot"></span> Checking instance metadata…
+        </div>
+
+        <div style="height:20px;"></div>
+
+        <div class="term-line"><span class="k">$ curl instance-id</span></div>
+        <div class="term-line"><span class="k">Instance ID:</span><span class="v" id="instance-id">—</span></div>
+
+        <div class="term-line"><span class="k">$ curl placement/availability-zone</span></div>
+        <div class="term-line"><span class="k">Availability Zone:</span><span class="v" id="availability-zone">—</span></div>
+
+        <div class="term-line"><span class="k">$ curl local-ipv4</span></div>
+        <div class="term-line"><span class="k">Private IP:</span><span class="v" id="private-ip">—</span></div>
+
+        <div class="term-line"><span class="k">$ curl public-ipv4</span></div>
+        <div class="term-line"><span class="k">Public IP:</span><span class="v" id="public-ip">—</span></div>
+
+        <div class="term-line"><span class="k">$ curl ami-id</span></div>
+        <div class="term-line"><span class="k">AMI ID:</span><span class="v" id="ami-id">—</span></div>
+
+        <div class="term-line"><span class="k">$ curl placement/region</span></div>
+        <div class="term-line"><span class="k">Region:</span><span class="v" id="region">—</span></div>
+
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:24px;">
+      <button id="refresh-metadata" class="btn btn-outline reveal"><i class="fa-solid fa-rotate"></i> Refresh Metadata</button>
+    </div>
+
+    <div class="status-note glass reveal">
+      <strong>Note:</strong> This dashboard queries <code>http://169.254.169.254/latest/meta-data/</code> using IMDSv2 directly from the browser. It only resolves with real values when this page is served from an Apache instance running on Amazon EC2, inside that instance's own network. On any other host — including local previews — every field falls back to <em>"Available after deployment on AWS EC2."</em>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Health Checks</span>
+      <h2>What's being monitored</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card glass reveal">
+        <div class="service-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        <h3>ALB Target Health</h3>
+        <p>The load balancer polls each EC2 target on a health-check path and removes unhealthy hosts from rotation automatically.</p>
+      </div>
+      <div class="service-card glass reveal">
+        <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>CloudWatch Alarms</h3>
+        <p>CPU utilization, request latency, and database connections are tracked continuously against defined thresholds.</p>
+      </div>
+      <div class="service-card glass reveal">
+        <div class="service-icon"><i class="fa-solid fa-bell"></i></div>
+        <h3>SNS Notifications</h3>
+        <p>Any alarm breach fans out an instant notification to the on-call engineer by email and SMS.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand"><span class="brand-mark">CK</span>CloudWithKushagra</a>
+        <p>A hands-on demonstration of a highly available, auto-scaling 3-tier web application built on AWS.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Site</h4>
+        <a href="index.html">Home</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="services.html">AWS Services</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="status.html">Infra Status</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:contact@cloudwithkushagra.in">Email</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 CloudWithKushagra — Designed for AWS Project</span>
+      <span class="powered"><i class="fa-brands fa-aws"></i> Powered by Amazon Web Services</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+<script src="js/script.js"></script>
+<script src="js/metadata.js"></script>
+</body>
+</html>

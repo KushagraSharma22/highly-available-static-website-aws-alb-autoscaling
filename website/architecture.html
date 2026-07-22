@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture | CloudWithKushagra</title>
+<meta name="description" content="Explore the highly available 3-tier AWS architecture behind CloudWithKushagra — Route 53, ALB, Auto Scaling, EC2, RDS, CloudWatch and SNS.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☁️</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark">CK</span>Cloud<span>With</span>Kushagra</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="services.html">AWS Services</a>
+      <a href="status.html">Infra Status</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="eyebrow"><i class="fa-solid fa-diagram-project"></i> Reference Architecture</span>
+    <h1>Highly Available 3-Tier Flow</h1>
+    <p>Traffic enters through DNS and a load balancer, fans out across an auto-scaling compute layer in two Availability Zones, and lands on a managed, Multi-AZ database — all observed continuously.</p>
+  </div>
+</header>
+
+<section style="padding-top:20px;">
+  <div class="container">
+    <div class="arch-flow">
+
+      <div class="arch-node glass reveal">
+        <div class="arch-icon"><i class="fa-solid fa-users"></i></div>
+        <div class="arch-text">
+          <h3>Users</h3>
+          <p>Requests arrive globally from browsers, mobile apps, and API clients.</p>
+        </div>
+      </div>
+      <div class="arch-arrow animated"></div>
+
+      <div class="arch-node glass reveal">
+        <div class="arch-icon"><i class="fa-solid fa-route"></i></div>
+        <div class="arch-text">
+          <h3>Amazon Route 53</h3>
+          <p>Managed DNS resolves the domain and performs health-check-based failover routing.</p>
+        </div>
+      </div>
+      <div class="arch-arrow animated"></div>
+
+      <div class="arch-node glass reveal">
+        <div class="arch-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="arch-text">
+          <h3>Application Load Balancer</h3>
+          <p>Distributes incoming traffic evenly across healthy targets in every Availability Zone.</p>
+        </div>
+      </div>
+      <div class="arch-arrow animated"></div>
+
+      <div class="arch-node glass reveal">
+        <div class="arch-icon"><i class="fa-solid fa-arrows-left-right-to-line"></i></div>
+        <div class="arch-text">
+          <h3>Auto Scaling Group</h3>
+          <p>Watches demand and launches or terminates instances automatically to match load.</p>
+        </div>
+      </div>
+      <div class="arch-arrow animated"></div>
+
+      <div class="arch-parallel">
+        <div class="arch-node glass reveal">
+          <div class="arch-icon"><i class="fa-solid fa-server"></i></div>
+          <div class="arch-text">
+            <h3>EC2 Instance 1</h3>
+            <p>Availability Zone A</p>
+          </div>
+        </div>
+        <div class="arch-node glass reveal">
+          <div class="arch-icon"><i class="fa-solid fa-server"></i></div>
+          <div class="arch-text">
+            <h3>EC2 Instance 2</h3>
+            <p>Availability Zone B</p>
+          </div>
+        </div>
+      </div>
+      <div class="arch-arrow animated"></div>
+
+      <div class="arch-node glass reveal">
+        <div class="arch-icon"><i class="fa-solid fa-database"></i></div>
+        <div class="arch-text">
+          <h3>Amazon RDS (Multi-AZ)</h3>
+          <p>A managed relational database with a synchronously replicated standby for automatic failover.</p>
+        </div>
+      </div>
+      <div class="arch-arrow animated"></div>
+
+      <div class="arch-node glass reveal">
+        <div class="arch-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="arch-text">
+          <h3>Amazon CloudWatch</h3>
+          <p>Collects metrics and logs from every layer, triggering scaling policies and alarms.</p>
+        </div>
+      </div>
+      <div class="arch-arrow animated"></div>
+
+      <div class="arch-node glass reveal">
+        <div class="arch-icon"><i class="fa-solid fa-bell"></i></div>
+        <div class="arch-text">
+          <h3>Amazon SNS</h3>
+          <p>Fans out alarm notifications to the engineering team by email and SMS in real time.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Design Principles</span>
+      <h2>What makes this architecture "highly available"</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card glass reveal">
+        <div class="service-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>No single point of failure</h3>
+        <p>Every tier is duplicated across at least two Availability Zones, so the loss of one zone does not take the app down.</p>
+      </div>
+      <div class="service-card glass reveal">
+        <div class="service-icon"><i class="fa-solid fa-arrows-spin"></i></div>
+        <h3>Elastic by default</h3>
+        <p>The Auto Scaling Group reacts to CloudWatch metrics, adding capacity ahead of demand and removing it once traffic subsides.</p>
+      </div>
+      <div class="service-card glass reveal">
+        <div class="service-icon"><i class="fa-solid fa-lock"></i></div>
+        <h3>Defense in depth</h3>
+        <p>Security Groups, a private VPC, and IAM roles restrict access at the network and identity layers simultaneously.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand"><span class="brand-mark">CK</span>CloudWithKushagra</a>
+        <p>A hands-on demonstration of a highly available, auto-scaling 3-tier web application built on AWS.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Site</h4>
+        <a href="index.html">Home</a>
+        <a href="architecture.html">Architecture</a>
+        <a href="services.html">AWS Services</a>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <a href="status.html">Infra Status</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:contact@cloudwithkushagra.in">Email</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 CloudWithKushagra — Designed for AWS Project</span>
+      <span class="powered"><i class="fa-brands fa-aws"></i> Powered by Amazon Web Services</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+<script src="js/script.js"></script>
+</body>
+</html>
